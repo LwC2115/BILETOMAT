@@ -59,7 +59,6 @@ class AnimacjaPlacenia(ctk.CTkFrame):
 
     def run_payment_animation(self):
         """Symulacja animacji płatności."""
-        # Symulacja procesu płatności
         self.message_label.configure(text="Przetwarzanie płatności...")
         for i in range(100):
             self.progress_bar.set(i / 100)
@@ -88,4 +87,6 @@ class AnimacjaPlacenia(ctk.CTkFrame):
 
     def go_back(self):
         """Wróć do poprzedniego ekranu."""
-        self.app.show_frame("JednorazoweZKM")
+        previous_page = self.app.previous_page if hasattr(self.app, "previous_page") else "MainScreen"
+        self.app.show_frame(previous_page)
+

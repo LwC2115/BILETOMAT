@@ -23,9 +23,9 @@ class JednorazoweZKM(ctk.CTkFrame):
 
         # Wiersze tabeli
         self.bilety = [
-            {"nazwa": "1-przejazdowy", "normalne": 0, "ulgowe": 0, "cena": 4.80},
-            {"nazwa": "75-minutowy", "normalne": 0, "ulgowe": 0, "cena": 6.00},
-            {"nazwa": "24-godzinny", "normalne": 0, "ulgowe": 0, "cena": 22.00},
+            {"nazwa": "1-przejazdowy (4.80/2.40 zł)", "normalne": 0, "ulgowe": 0, "cena": 4.80},
+            {"nazwa": "75-minutowy (6.00/3.00 zł)", "normalne": 0, "ulgowe": 0, "cena": 6.00},
+            {"nazwa": "24-godzinny (22.00/11.00 zł)", "normalne": 0, "ulgowe": 0, "cena": 22.00},
         ]
         self.create_table_rows()
 
@@ -54,9 +54,9 @@ class JednorazoweZKM(ctk.CTkFrame):
 
     def create_table_header(self):
         """Tworzy nagłówki tabeli."""
-        ctk.CTkLabel(self.table_frame, text="Bilet", font=("Arial", 32, "bold"), width=300).grid(row=0, column=0, padx=20, pady=20)
-        ctk.CTkLabel(self.table_frame, text="Normalny", font=("Arial", 32, "bold"), width=300).grid(row=0, column=1, padx=20, pady=20)
-        ctk.CTkLabel(self.table_frame, text="Ulgowy", font=("Arial", 32, "bold"), width=300).grid(row=0, column=2, padx=20, pady=20)
+        ctk.CTkLabel(self.table_frame, text="Bilet", font=("Arial", 32, "bold"), width=400).grid(row=0, column=0, padx=20, pady=20)
+        ctk.CTkLabel(self.table_frame, text="Normalne", font=("Arial", 32, "bold"), width=300).grid(row=0, column=1, padx=20, pady=20)
+        ctk.CTkLabel(self.table_frame, text="Ulgowe", font=("Arial", 32, "bold"), width=300).grid(row=0, column=2, padx=20, pady=20)
 
     def create_table_rows(self):
         """Tworzy wiersze tabeli."""
@@ -71,7 +71,7 @@ class JednorazoweZKM(ctk.CTkFrame):
             row_content.pack(fill="both", expand=True)
 
             # Kolumna nazwy biletu
-            ctk.CTkLabel(row_content, text=bilet["nazwa"], font=("Arial", 28), width=250).pack(side="left", padx=20)
+            ctk.CTkLabel(row_content, text=bilet["nazwa"], font=("Arial", 28), width=380).pack(side="left", padx=20)
 
             # Kolumna "Normalny"
             self.create_quantity_controls(row_content, i, "normalne", "left")
