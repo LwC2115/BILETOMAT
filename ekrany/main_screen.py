@@ -44,7 +44,7 @@ class MainScreen(ctk.CTkFrame):
 
         self.okresowe_mzkzg_btn = ctk.CTkButton(
             button_frame, text="Okresowe MZKZG", width=400, height=150, font=("Arial", 30, "bold"),
-            command=lambda: app.show_frame("OkresoweMZKZG")
+            command=lambda: app.show_frame("AnimacjaWczytaniaKartyMetro")
         )
         self.okresowe_mzkzg_btn.grid(row=1, column=1, padx=30, pady=20)
 
@@ -75,6 +75,6 @@ class MainScreen(ctk.CTkFrame):
         # Aktualizacja kolorów przycisków językowych
         for button in self.language_buttons:
             if button.cget("text") == selected_language:
-                button.configure(fg_color="#2a6ca3")  # Wybrany język
+                button.configure(fg_color="#003366")  # Wybrany język
             else:
                 button.configure(fg_color="#3b8ed0")  # Inne języki

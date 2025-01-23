@@ -1,3 +1,4 @@
+
 import customtkinter as ctk
 
 class JednorazoweZKM(ctk.CTkFrame):
@@ -39,7 +40,7 @@ class JednorazoweZKM(ctk.CTkFrame):
 
         # Przycisk "Zapłać"
         self.pay_button = ctk.CTkButton(
-            payment_frame, text="Zapłać", width=400, height=100, font=("Arial", 36, "bold"),
+            payment_frame, text="Zapłać", width=500, height=100, font=("Arial", 36, "bold"),
             command=lambda: self.start_payment(),
             state="disabled"  # Domyślnie wyłączony
         )

@@ -3,10 +3,11 @@ from ekrany.main_screen import MainScreen
 from ekrany.jednorazowe_zkm import JednorazoweZKM
 from ekrany.OkresowyUlgowy_1 import OkresowyUlgowy_1
 from ekrany.Wybor_Rejonu import Wybor_Rejonu
-from ekrany.okresowe_mzkzg import OkresoweMZKZG
+from ekrany.wybor_rejonu_metro import Wybor_Rejonu_Metro
 from ekrany.jednorazowe_mzkzg import JednorazoweMZKZG
 from ekrany.animacja_placenia import AnimacjaPlacenia
 from ekrany.animacja_wczytania_karty import AnimacjaWczytaniaKarty
+from ekrany.animacja_wczytania_karty_metro import AnimacjaWczytaniaKartyMetro
 
 ctk.set_appearance_mode("light")
 
@@ -41,18 +42,19 @@ class App(ctk.CTk):
         self.add_frame("Wybor_Rejonu", Wybor_Rejonu)
         
 
-        self.add_frame("OkresoweMZKZG", OkresoweMZKZG)
+        self.add_frame("Wybor_Rejonu_Metro", Wybor_Rejonu_Metro)
         
 
         self.add_frame("AnimacjaPlacenia", AnimacjaPlacenia)
         self.add_frame("AnimacjaWczytaniaKarty", AnimacjaWczytaniaKarty)
+        self.add_frame("AnimacjaWczytaniaKartyMetro", AnimacjaWczytaniaKartyMetro)
 
 
         # Rozpocznij od głównego ekranu
         self.show_frame("MainScreen")
 
     def add_frame(self, name, frame_class):
-        if name == "AnimacjaPlacenia" or name=="AnimacjaWczytaniaKarty":  # Dla klasy AnimacjaPlacenia
+        if name == "AnimacjaPlacenia" or name=="AnimacjaWczytaniaKarty" or name=="AnimacjaWczytaniaKartyMetro":  # Dla klasy AnimacjaPlacenia
             frame = frame_class(self)  # Tylko `self` (bez `selected_language`)
         else:  # Dla pozostałych klas ekranów
             frame = frame_class(self, self.selected_language)

@@ -1,21 +1,24 @@
 import customtkinter as ctk
 
 
-class OkresowyUlgowy_1(ctk.CTkFrame):
-    def __init__(self, app, selected_language):
+class Wybor_Rejonu_Metro(ctk.CTkFrame):
+    def __init__(self, app, rodzaj_biletu):
         super().__init__(app)
         self.app = app
         self.selected_bilet = None  # Zmienna do przechowywania wybranego biletu
         self.selected_button = None  # Zmienna do przechowywania aktualnie wybranego przycisku
+        self.rodzaj_biletu = rodzaj_biletu  # Rodzaj biletu przekazany z poprzedniego ekranu
+
 
         self.bilety = [
-            {"nazwa": "Miesięczny"},
-            {"nazwa": "Semestralny 4-miesięczny"},
-            {"nazwa": "Semestralny 5-miesięczny"},
+            {"nazwa": "Komunalny", "ceny": {"OkresowyNormalny": 156.00, "OkresowyUlgowy_1": 78.00}},
+            {"nazwa": "Gdańsk-Sopot albo Gdynia-Sopot", "ceny": {"OkresowyNormalny": 80.00, "OkresowyUlgowy_1": 40.00}},
+            {"nazwa": "Sieciowy jednego organizatora", "ceny": {"OkresowyNormalny": 86.00, "OkresowyUlgowy_1": 43.00}},
+            {"nazwa": "Na cały obszar MZKZG", "ceny": {"OkresowyNormalny": 106.00, "OkresowyUlgowy_1": 53.00}},
         ]
 
         # Nagłówek
-        self.label = ctk.CTkLabel(self, text="Bilet okresowy ZKM w Gdyni", font=("Arial", 40, "bold"))
+        self.label = ctk.CTkLabel(self, text="Bilety okresowy ZKM w Gdyni", font=("Arial", 40, "bold"))
         self.label.pack(pady=20)
 
         # Ramka dla przycisków głównych
@@ -31,7 +34,7 @@ class OkresowyUlgowy_1(ctk.CTkFrame):
                 text=bilet["nazwa"],
                 width=400,
                 height=150,
-                font=("Arial", 30, "bold"),
+                font=("Arial", 20, "bold"),
             )
             # Ustawienie komendy po utworzeniu przycisku
             button.configure(command=lambda b=bilet, btn=button: self.select_bilet(b, btn))
@@ -45,12 +48,12 @@ class OkresowyUlgowy_1(ctk.CTkFrame):
         # Dodanie przycisku "Zapłać" na końcu siatki
         self.pay_button = ctk.CTkButton(
             button_frame,
-            text="Wybierz rodzaj",
+            text="Zapłać",
             font=("Arial", 30, "bold"),
             height=70,
             width=300,
             state="disabled",  # Domyślnie wyłączony
-            command=self.go_next
+            command=self.start_payment
         )
         self.pay_button.grid(row=2, column=1,  padx=10, pady=20)
 
@@ -65,7 +68,7 @@ class OkresowyUlgowy_1(ctk.CTkFrame):
         )
         self.back_btn.place(relx=0.05, rely=0.03, anchor="nw")
 
-         # Przycisk "Powrót na stronę główną"
+                 # Przycisk "Powrót na stronę główną"
         self.home_btn = ctk.CTkButton(
             self,
             text="Strona Główna",
@@ -75,6 +78,17 @@ class OkresowyUlgowy_1(ctk.CTkFrame):
             command=lambda: self.app.show_frame("MainScreen")
         )
         self.home_btn.place(relx=0.95, rely=0.03, anchor="ne")
+    
+    def on_enter(self, previous_page, rodzaj_biletu):
+        """Funkcja wywoływana przy wejściu na ekran."""
+        self.rodzaj_biletu = rodzaj_biletu  # Przechowaj przekazany rodzaj biletu
+        # Zresetuj stan, jeśli to konieczne
+        self.selected_bilet = None
+        self.selected_button = None
+        self.pay_button.configure(text="Zapłać", state="disabled")
+        for button in self.buttons:
+            button.configure(fg_color="#3b8ed0")  # Przywróć domyślny kolor         
+
 
     def select_bilet(self, bilet, button):
         """Obsługuje wybór biletu i zmienia kolor wybranego przycisku."""
@@ -90,23 +104,19 @@ class OkresowyUlgowy_1(ctk.CTkFrame):
         self.selected_button.configure(fg_color="#003366")  # Kolor podświetlenia
 
         # Zaktualizuj tekst przycisku "Zapłać"
-        self.pay_button.configure(text=f"Dalej", state="normal")
+        cena = bilet["ceny"].get(self.rodzaj_biletu, 0)
+        self.pay_button.configure(text=f"Zapłać {cena:.2f} zł", state="normal")
 
-    
-    def go_next(self):
+    def start_payment(self):
         """Rozpocznij płatność."""
-        if self.selected_bilet is not None: 
-                rodzaj = self.selected_bilet["nazwa"]
-                self.app.show_frame("Wybor_Rejonu", rodzaj)
+        if self.selected_bilet is not None:
+            total_price = self.selected_bilet["ceny"].get(self.rodzaj_biletu, 0)
+            self.app.show_frame("AnimacjaPlacenia", total_price)
 
     def go_back(self):
         """Akcja przycisku 'Wróć'."""
-        self.app.show_frame("MainScreen")
-
-    def on_enter(self, previous_page=None, *args):
-        """Resetuje stan ekranu przy wejściu."""
-        self.selected_bilet = None
-        self.selected_button = None
-        self.pay_button.configure(text="Wybierz rodzaj ", state="disabled")
-        for button in self.buttons:
-            button.configure(fg_color="#3b8ed0")  # Przywróć domyślny kolor
+        previous_screen = getattr(self.app, "previous_page", None)
+        if previous_screen == "OkresowyUlgowy_1":
+            self.app.show_frame("OkresowyUlgowy_1")
+        else:
+            self.app.show_frame("MainScreen")

@@ -68,6 +68,17 @@ class Wybor_Rejonu(ctk.CTkFrame):
             command=self.go_back
         )
         self.back_btn.place(relx=0.05, rely=0.03, anchor="nw")
+
+         # Przycisk "Powrót na stronę główną"
+        self.home_btn = ctk.CTkButton(
+            self,
+            text="Strona Główna",
+            width=200,
+            height=70,
+            font=("Arial", 24, "bold"),
+            command=lambda: self.app.show_frame("MainScreen")
+        )
+        self.home_btn.place(relx=0.95, rely=0.03, anchor="ne")
     
     def on_enter(self, previous_page, rodzaj_biletu):
         """Funkcja wywoływana przy wejściu na ekran."""
